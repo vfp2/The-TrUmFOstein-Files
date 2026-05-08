@@ -37,6 +37,7 @@ We are getting our reference frame straight before ingesting documents.
 - [related-repos.md](related-repos.md) — a survey of other GitHub projects already working on the same release, with notes on each one's approach, tech, and stage. Knowing what others are building helps us not duplicate effort and identifies useful prior art (data manifests, OCR outputs, indexes) we may be able to consume rather than rebuild.
 - [architecture/](architecture/) — the ongoing architectural discussion. Numbered entries; each one is open until superseded.
   - [01 — Hypergraph hypothesis and prior art](architecture/01-hypergraph-hypothesis-and-prior-art.md) — does the substrate want to be a true hypergraph? Survey of historic and current UFO/UAP database architectures, candidate n-ary stores (TypeDB, RDF-star, Datomic, Neo4j+reification), and an early take that the answer is probably hybrid pending document-content evidence.
+  - [02 — Peer substrate survey: schemas, pipelines, and what to steal](architecture/02-peer-substrate-survey.md) — read peer code (sanderlegit/uap, zvizdo, clubufo, uap-release-analyzer, alien-files, abigailhaddad, vng9trmgr8) and extract concrete patterns. Refines the hypothesis: claims become the atomic unit (clubufo-shaped), hyperedges sit above claims, and several layers below the hypergraph (vocab, manifest, OCR, page-provenance) have working peer implementations to compose.
 
 ## Roadmap (provisional)
 
