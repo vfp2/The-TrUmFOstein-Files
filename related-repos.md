@@ -62,6 +62,23 @@ These go beyond mirroring: full-text search, OCR, RAG chat, or wiki-style cross-
 
 ---
 
+## Manifest snapshots / source captures
+
+### [ahmetcadirci25 / uap-csv.csv (gist)](https://gist.github.com/ahmetcadirci25/e4edb7d30109fdb8ff14b73dc75f67bc)
+*Created 2026-05-08 14:02 UTC — earliest public capture we've found, ~44 minutes before [DenisSergeevitch/UFO-USA](https://github.com/DenisSergeevitch/UFO-USA) and well before the rest.* A single-file gist of the raw `uap-csv.csv` manifest as published on war.gov. **143 lines** at capture time vs **575 / 573** in the copies vendored by `UFO-USA` and `pursue-ufo-files` respectively — strongly suggesting either the manifest was extended after this snapshot, or our local copies expanded multi-line fields differently. Either way, this is a useful **point-in-time t₀ reference** for diff-ing how the canonical manifest evolves across release tranches.
+
+Schema (column headers, identical across this gist and all three local repos — `UFO-USA`, `pursue-ufo-files`, `uap-disclosure-archive`):
+
+```
+Redaction, Release Date, Title, Type, Video Pairing, PDF Pairing,
+Description Blurb, DVIDS Video ID, Video Title, Agency, Incident Date,
+Incident Location, PDF | Image Link, Modal Image
+```
+
+That column set is effectively the **war.gov export schema** — a thin record-level model: agency, type (PDF/VID), incident date+location free-text, description blurb, link, and pairing fields tying a video to its PDF (or vice versa) via `Video Pairing` / `PDF Pairing`. Notably absent at the source: any structured witness, sensor, classification, or program field. Anything richer than this we have to derive.
+
+`uap-disclosure-archive` also vendors a second, parallel CSV (`release-table.csv`) with a different but overlapping shape — `Asset File Name, Release Date, Title, Blurb, Agency, Incident Date, Incident Location, Document type, Document Link, Image, Videos`. Worth noting that two different CSVs exist on the source side; reconciliation is a small but real ingestion task.
+
 ## Out of scope
 
 ### [ufo50bingo/ufo50bingo_classify](https://github.com/ufo50bingo/ufo50bingo_classify)
