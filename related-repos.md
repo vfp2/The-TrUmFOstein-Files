@@ -6,66 +6,101 @@ The point of this list is not completeness — it is **situational awareness**: 
 
 Repos are grouped by what they're trying to do.
 
+## Snapshot history
+
+- **2026-05-08, ~19:30 UTC** (release + ~5 hr): 18 projects tracked. **+6 since first snapshot** (`uap-release-analyzer`, `uap` (sanderlegit), `alien-files`, `ufo-releases` (abigailhaddad), `WarGov` (wrek), `Chat-With-Aliens`, `ufo` (toor11), `uap-disclosure-tracker` (pre-release context)). **−1**: `davemorin/pursue-ufo-files` deleted; we have a local clone preserved at [vfp2/pursue-ufo-files](https://github.com/vfp2/pursue-ufo-files). Notable star deltas: `uap-release-analyzer` 0→48 (highest-traction), `UFO-USA` 26→33, `uap-release-01` 11→21.
+- **2026-05-08, ~17:50 UTC** (release + ~3 hr): initial snapshot, 12 projects tracked.
+
 ---
 
 ## Mirrors and converted archives
 
 These projects mostly re-host the corpus, often with light reformatting. Useful as alternative download sources and as a sanity-check on the manifest.
 
-### [vng9trmgr8-pixel/war-gov-ufo-release-1](https://github.com/vng9trmgr8-pixel/war-gov-ufo-release-1)
+### [vng9trmgr8-pixel/war-gov-ufo-release-1](https://github.com/vng9trmgr8-pixel/war-gov-ufo-release-1) — 2 ★
 *Created 2026-05-08 16:58 UTC.* Static-site mirror — 119 PDFs with summaries and thumbnails, plus 14 still images in a gallery. No framework: HTML/CSS/JS plus Python build scripts (`build_data.py`, `extract_text.py`) that turn the war.gov CSV manifest into a `data.json`. All file links point back to the official source rather than rehosting. Hosted on Vercel. ~5 commits. Useful as a reference for parsing the manifest.
 
-### [DenisSergeevitch/UFO-USA](https://github.com/DenisSergeevitch/UFO-USA) — 26 stars
-*Created 2026-05-08 14:46 UTC.* Converted-Markdown archive. 120 PDFs, 4,185 pages, OCR'd page-by-page via **Gemini AI at 200 DPI**, output as Markdown with YAML frontmatter. Includes conversion scripts, download logs, and a manifest tracking 4,174 successful conversions plus 11 errored pages. Probably the most directly consumable text corpus of the lot — if their OCR is clean we may not need to re-OCR.
+### [DenisSergeevitch/UFO-USA](https://github.com/DenisSergeevitch/UFO-USA) — 33 ★, 8 forks
+*Created 2026-05-08 14:46 UTC.* Converted-Markdown archive. 120 PDFs, 4,185 pages, OCR'd page-by-page via **Gemini AI at 200 DPI**, output as Markdown with YAML frontmatter. Includes conversion scripts, download logs, and a manifest tracking 4,174 successful conversions plus 11 errored pages. Probably the most directly consumable text corpus of the lot — if their OCR is clean we may not need to re-OCR. Currently the highest-starred *corpus* repo. We have a fork at [vfp2/UFO-USA](https://github.com/vfp2/UFO-USA).
 
-### [Onebooming/US-WAR-GOV-UFO](https://github.com/Onebooming/US-WAR-GOV-UFO)
+### [Onebooming/US-WAR-GOV-UFO](https://github.com/Onebooming/US-WAR-GOV-UFO) — 0 ★
 *Created 2026-05-08 15:29 UTC.* Stub — title points at `war.gov/UFO/` PDFs but the repo has effectively no content. Tracking only.
+
+### [wrek/WarGov](https://github.com/wrek/WarGov) — 0 ★
+*Created 2026-05-08 19:13 UTC.* Stated as "WarGov document archive and extracted markdown content" but currently empty. Tracking only — worth re-checking in a few hours.
 
 ---
 
-## Searchable archives / reading rooms
+## Searchable archives, reading rooms, and RAG interfaces
 
 These go beyond mirroring: full-text search, OCR, RAG chat, or wiki-style cross-linking.
 
-### [robzilla1738/clubufo](https://github.com/robzilla1738/clubufo)
-*Created 2026-05-08 14:51 UTC, 13 commits.* "ClubUFO — a reading room for declassified UFO/UAP documents." Browsable library + RAG chat over 161 PDFs with **page-cited answers**. Stack: Next.js 15 / React 19 / Tailwind v4 / shadcn/ui frontend; Neon Postgres + pgvector; DeepSeek for chat, OpenAI `text-embedding-3-small` for embeddings; Drizzle ORM; `unpdf` for serverless PDF extraction; Vercel Blob storage; admin ingestion routes. The README frames sources as "public, declassified, and citizen-submitted" — broader than just war.gov. Closest to a fully-shaped end-user product right now.
+### [robzilla1738/clubufo](https://github.com/robzilla1738/clubufo) — 1 ★, 15 commits
+*Created 2026-05-08 14:51 UTC.* "ClubUFO — a reading room for declassified UFO/UAP documents." Browsable library + RAG chat over 161 PDFs with **page-cited answers**. Stack: Next.js 15 / React 19 / Tailwind v4 / shadcn/ui frontend; Neon Postgres + pgvector; DeepSeek for chat, OpenAI `text-embedding-3-small` for embeddings; Drizzle ORM; `unpdf` for serverless PDF extraction; Vercel Blob storage; admin ingestion routes. The README frames sources as "public, declassified, and citizen-submitted" — broader than just war.gov. Hybrid search via `/api/chat`. Closest to a fully-shaped end-user product right now.
 
-### [zexiro/uap-disclosure-archive](https://github.com/zexiro/uap-disclosure-archive) — 1 star
-*Created 2026-05-08 14:58 UTC.* Self-hosted searchable mirror of all 162 records. Python pipeline (CSV parse, concurrent download, OCR via `pdftotext` / `ocrmypdf`); MiniSearch index in the frontend; a single-page search UI; **Obsidian vault** with 162 cross-linked notes; **TF-IDF and perceptual-hash similarity** to surface content and visual relationships; 6-hour automated refresh; deployed on Railway with persistent volumes. Stated longer-term ambition: a "Disclosure Globe" aggregating AARO, NUFORC, Project Blue Book, and international archives. Architecturally the most aligned with what we want — worth watching closely.
+### [zexiro/uap-disclosure-archive](https://github.com/zexiro/uap-disclosure-archive) — 2 ★, 1 fork
+*Created 2026-05-08 14:58 UTC.* Self-hosted searchable mirror of all 162 records. Python pipeline (CSV parse, concurrent download, OCR via `pdftotext` / `ocrmypdf`); MiniSearch index in the frontend; a single-page search UI; **Obsidian vault** with 162 cross-linked notes; **TF-IDF and perceptual-hash similarity** to surface content and visual relationships; 6-hour automated refresh; deployed on Railway with persistent volumes. Stated longer-term ambition: a "Disclosure Globe" aggregating AARO, NUFORC, Project Blue Book, and international archives. Architecturally the most aligned with what we want — worth watching closely. We have a fork at [vfp2/uap-disclosure-archive](https://github.com/vfp2/uap-disclosure-archive).
 
-### [zvizdo/ufo-knowledge-base](https://github.com/zvizdo/ufo-knowledge-base)
-*Created 2026-05-08 04:14 UTC — about 13 hours **before** the war.gov release.* Pre-existing connected wiki of the UFO/UAP discourse: ~2,258 pages, ~29,000 wikilinks, covering 957 people, 406 concepts, 260 organisations, 138 incidents, 129 places, 103 documents, 84 programmes. Plain Markdown with YAML frontmatter, organised in `ufo-kb/wiki/` by entity type, raw sources in `ufo-kb/raw/`. Built with Claude Code custom skills (`kb-import`, `kb-query`, `kb-maintain`), embeddings index via `qmd`, Python YouTube-transcript ingestion, Obsidian-compatible. Explicitly frames itself as **mapping discourse, not adjudicating truth** — contested claims get conflict flags rather than resolution. As of this snapshot it does **not yet reference the war.gov release**. This is the most interesting peer for our purposes: a mature schema for the surrounding context that the new corpus can be plugged into.
+### [Pump-OS/alien-files](https://github.com/Pump-OS/alien-files) — 0 ★
+*Created 2026-05-08 17:32 UTC.* "ALIEN.FILES — searchable, OCR-indexed mirror." Discovers the war.gov manifest, mirrors PDFs via **Playwright** (Akamai-aware), then runs a three-stage extraction: pdfplumber for born-digital text, **Tesseract** for scanned pages, then JSON serialisation. Search via **MiniSearch** (client-side BM25). Adds **Claude-powered RAG chat with inline citations**. Frontend is Next.js 15 / TypeScript / Tailwind v4. Deploys on Vercel with optional R2 / GitHub Releases for PDF hosting. 161 records indexed. Functional. Notable as the only project in the survey using Tesseract specifically — a fallback OCR engine worth knowing about for documents Gemini struggles on.
+
+### [abigailhaddad/ufo-releases](https://github.com/abigailhaddad/ufo-releases) — 0 ★
+*Created 2026-05-08 18:39 UTC, 5 commits.* Searchable, sortable interface positioned explicitly as a fix for the official site being "JS-heavy and inconvenient." Next.js / TypeScript / React; Playwright for browser automation. **Daily GitHub Actions** fetch the CSV metadata, merge new/updated records, and *preserve records flagged as removed from the source* — an explicit archival stance. Deploys on Vercel. All file links redirect to original government URLs. The "preserve-on-removal" pattern is architecturally interesting and aligns with what we'd want for cross-tranche durability.
+
+### [zvizdo/ufo-knowledge-base](https://github.com/zvizdo/ufo-knowledge-base) — 0 ★
+*Created 2026-05-08 04:14 UTC — about 13 hours **before** the war.gov release.* Pre-existing connected wiki of the UFO/UAP discourse: ~2,258 pages, ~29,000 wikilinks, covering 957 people, 406 concepts, 260 organisations, 138 incidents, 129 places, 103 documents, 84 programmes. Plain Markdown with YAML frontmatter, organised in `ufo-kb/wiki/` by entity type, raw sources in `ufo-kb/raw/`. Built with Claude Code custom skills (`kb-import`, `kb-query`, `kb-maintain`), embeddings index via `qmd`, Python YouTube-transcript ingestion, Obsidian-compatible. Explicitly frames itself as **mapping discourse, not adjudicating truth** — contested claims get conflict flags rather than resolution. As of this snapshot it does **not yet reference the war.gov release** (still 3 commits, no PURSUE references). This is the most interesting peer for our purposes: a mature schema for the surrounding context that the new corpus can be plugged into.
+
+### [ChatWithAliens/Chat-With-Aliens](https://github.com/ChatWithAliens/Chat-With-Aliens) — 0 ★
+*Created 2026-05-08 16:55 UTC.* RAG chat across 51 documents (3,037 pages, 2,416 indexed chunks) from FBI / CIA / DoD UFO/UAP files — **broader than just war.gov**, dipping into the older Vault. Five named "personas" (Affa, Ponnar, Monka, Orthon, Zemkla) interactively answer in-character using grounded retrieval. Stack: React/Vite frontend, Node.js/Express backend, **PostgreSQL with full-text search** (no vector DB), GPT-4o for generation. Architecturally simpler than the pgvector RAG path: classical FTS + LLM-over-retrieved-chunks. Notable mostly for the breadth of corpus and the choice of FTS-not-vectors; the persona framing is a UX layer, not an architectural one.
 
 ---
 
-## Download/automation tooling
+## Download / automation tooling
 
-### [davemorin/pursue-ufo-files](https://github.com/davemorin/pursue-ufo-files)
-*Created 2026-05-08 17:34 UTC, 1 commit.* Node.js + Playwright (Chromium) automation for fetching the manifest, downloading all 119 PDFs (~8–10 GB), and emitting agency/theme summaries. Calls out a useful gotcha: **war.gov sits behind Akamai with bot detection**, so plain `curl` / `fetch` is rejected — only in-browser `fetch()` calls inherit the right TLS fingerprint. Uses base64 + HTTP Range requests for large files. Includes `ANALYSIS.md` and `KRIPAL_BRIEFING.md` scaffolding. Author Dave Morin (former Facebook/Path) gives this some signal weight despite the nascent state.
+### [toor11/ufo](https://github.com/toor11/ufo) — 0 ★
+*Created 2026-05-08 17:51 UTC.* Bulk downloader for 161 records (PDFs, images, videos), preserving original filenames. Python + **Playwright (Chromium, visible)** — same Akamai-bot-detection bypass strategy as the deleted davemorin script. Tighter scope: just download, no analysis layer. Useful as a fallback or cross-check tool.
 
 ---
 
 ## Datasets and analyser skills
 
-### [ckpxgfnksd-max/uap-release-01](https://github.com/ckpxgfnksd-max/uap-release-01) — 11 stars
+### [ckpxgfnksd-max/uap-release-01](https://github.com/ckpxgfnksd-max/uap-release-01) — 21 ★, 5 forks
 *Created 2026-05-08 14:51 UTC.* "Mirror of the May 2026 war.gov PURSUE UAP/UFO release (132 files, 2.4 GB). LFS-backed example corpus for the uap-release-analyzer skill." Most useful as a **canonical, hash-stable, LFS-backed dataset** — the description even positions it as a fixture for evaluating an analyser tool. If we want a reproducible test corpus this may be the cleanest pin.
+
+### [ckpxgfnksd-max/uap-release-analyzer](https://github.com/ckpxgfnksd-max/uap-release-analyzer) — **48 ★, 7 forks** *(highest traction in the survey)*
+*Created 2026-05-08 14:32 UTC — earliest tool repo of any tracked.* A **Claude Code skill** that turns a folder of declassified UAP/UFO documents into a structured analysis. Workflow: (1) inventory PDFs by agency / type / page count, (2) extract text via `pdfplumber` (flagging scanned files needing OCR), (3) tally token frequencies, surface entities, and characterise redaction patterns, (4) emit a standardised **11-section `REPORT.md`** with top terms, locations, agency breakdowns, and cross-document patterns. Tuned for UAP release structure (recognises agency filename prefixes, FOIA exemption codes, war.gov quirks) but explicitly designed to be reusable across **future PURSUE tranches and adjacent corpora (FBI Vault, NARA, AARO)** by adding new prefix mappings. Notable for being the only project that explicitly anticipates re-running against new tranches as they land — directly relevant to our cross-tranche durability goal. The 48 stars suggest the Claude-skill packaging format is gaining real momentum.
 
 ---
 
-## Analysis / commentary
+## Structured analysis and databases
 
-### [joseph-schiro/WAR.GOV---UAP-Evidence-Analysis](https://github.com/joseph-schiro/WAR.GOV---UAP-Evidence-Analysis)
+### [sanderlegit/uap](https://github.com/sanderlegit/uap) — 0 ★, 3 commits
+*Created 2026-05-08 18:18 UTC — coincidentally 2 minutes after our own repo was created.* Self-described as "Analysis of 145 declassified UAP/UFO files." Importantly: **structured analysis, not RAG-over-PDFs**. Contains:
+
+- An **SQLite database** (`incidents_v2.db`) holding incident-level records (schema not yet fully documented in the README).
+- A **cross-reference graph visualisation** linking entities and incidents across documents.
+- An **interactive map** and **timeline**.
+- Targeted analytical reports — FBI deep dive, Apollo deep dive, **redaction analysis**.
+- Python pipeline scripts for OCR, text extraction, data export, and DVIDS video downloads.
+
+**Most directly aligned with our project's analytical ambitions** of any repo in the survey. Worth examining their SQLite schema closely — it may be the only public data point on what an actual structured incident model for this corpus looks like in practice. The cross-reference graph will tell us what level of entity granularity others are reaching at this stage.
+
+---
+
+## Analysis and commentary
+
+### [joseph-schiro/WAR.GOV---UAP-Evidence-Analysis](https://github.com/joseph-schiro/WAR.GOV---UAP-Evidence-Analysis) — 0 ★
 *Created 2026-05-08 16:22 UTC.* Stated as "Deep analysis of the UAP files released on War.gov/UFO" but contents are minimal — README, GPL-3.0 LICENSE, and a single `index.html`. Tracking; substance not yet visible.
 
-### [RUFOIOT/editorial-uap-pursue](https://github.com/RUFOIOT/editorial-uap-pursue)
+### [RUFOIOT/editorial-uap-pursue](https://github.com/RUFOIOT/editorial-uap-pursue) — 0 ★
 *Created 2026-05-08 15:47 UTC.* Spanish-language editorial commentary by Felipe Salgado — "El Gran Show de la Transparencia." Single HTML file, opinion/analysis rather than data. Useful as one data point on international reception.
 
 ---
 
-## Manifest snapshots / source captures
+## Manifest snapshots and source captures
 
 ### [ahmetcadirci25 / uap-csv.csv (gist)](https://gist.github.com/ahmetcadirci25/e4edb7d30109fdb8ff14b73dc75f67bc)
-*Created 2026-05-08 14:02 UTC — earliest public capture we've found, ~44 minutes before [DenisSergeevitch/UFO-USA](https://github.com/DenisSergeevitch/UFO-USA) and well before the rest.* A single-file gist of the raw `uap-csv.csv` manifest as published on war.gov. **143 lines** at capture time vs **575 / 573** in the copies vendored by `UFO-USA` and `pursue-ufo-files` respectively — strongly suggesting either the manifest was extended after this snapshot, or our local copies expanded multi-line fields differently. Either way, this is a useful **point-in-time t₀ reference** for diff-ing how the canonical manifest evolves across release tranches.
+*Created 2026-05-08 14:02 UTC — earliest public capture we've found, ~30 minutes before any tracked repo.* A single-file gist of the raw `uap-csv.csv` manifest as published on war.gov. **143 lines** at capture time vs **575 / 573** in the copies vendored by `UFO-USA` and `pursue-ufo-files` respectively — strongly suggesting either the manifest was extended after this snapshot, or our local copies expanded multi-line fields differently. Either way, this is a useful **point-in-time t₀ reference** for diff-ing how the canonical manifest evolves across release tranches.
 
 Schema (column headers, identical across this gist and all three local repos — `UFO-USA`, `pursue-ufo-files`, `uap-disclosure-archive`):
 
@@ -79,6 +114,22 @@ That column set is effectively the **war.gov export schema** — a thin record-l
 
 `uap-disclosure-archive` also vendors a second, parallel CSV (`release-table.csv`) with a different but overlapping shape — `Asset File Name, Release Date, Title, Blurb, Agency, Incident Date, Incident Location, Document type, Document Link, Image, Videos`. Worth noting that two different CSVs exist on the source side; reconciliation is a small but real ingestion task.
 
+---
+
+## Pre-release / adjacent
+
+### [PickleTime27/uap-disclosure-tracker](https://github.com/PickleTime27/uap-disclosure-tracker) — 0 ★
+*Created 2026-02-25.* Pre-dates the war.gov release by ~10 weeks. Real-time UAP/UFO disclosure tracker monitoring congressional hearings, legislation, key players in the transparency push, and declassified documents. Next.js / TypeScript with AI-powered document summarisation. Useful as **context outside the corpus** — when the substrate needs to link an incident to the broader political/legislative timeline, this is the kind of feed that should be ingested.
+
+---
+
+## Removed / archived
+
+### ~~[davemorin/pursue-ufo-files](https://github.com/davemorin/pursue-ufo-files)~~ — DELETED
+*Existed 2026-05-08 17:34 UTC → deleted some time before 2026-05-08 ~19:30 UTC.* Original creator pulled the repo. Notable — author was Dave Morin (former Facebook/Path). Reason for deletion not stated. **We preserved a local clone before deletion**, with 1 commit, the Playwright/Akamai-aware download script, the original manifest, and the `ANALYSIS.md` / `KRIPAL_BRIEFING.md` scaffolding. Republished at **[vfp2/pursue-ufo-files](https://github.com/vfp2/pursue-ufo-files)** for archival continuity. The Akamai-bot-bypass technique it documented (in-browser fetch via Playwright to inherit the right TLS fingerprint) is captured in our copy and remains the canonical solution.
+
+---
+
 ## Out of scope
 
 ### [ufo50bingo/ufo50bingo_classify](https://github.com/ufo50bingo/ufo50bingo_classify)
@@ -91,8 +142,11 @@ That column set is effectively the **war.gov export schema** — a thin record-l
 
 ## Takeaways for our approach
 
-- **OCR is largely solved** — at least two projects (UFO-USA, uap-disclosure-archive) have already produced full page-level text. We should evaluate consuming one of those rather than redoing OCR from PDFs ourselves.
+- **OCR is largely solved** — at least three projects (UFO-USA via Gemini, uap-disclosure-archive via `ocrmypdf`, alien-files via Tesseract) have already produced full page-level text. We should evaluate consuming one of those rather than redoing OCR from PDFs ourselves.
 - **A canonical dataset pin exists** in `ckpxgfnksd-max/uap-release-01` (LFS, 132 files, hash-stable). Worth using as an immutable reference even if we maintain our own working copy.
-- **The Akamai/Playwright gotcha** is real — anyone building a download script needs to know this up front (`davemorin/pursue-ufo-files` documents it cleanly).
-- **No one has yet attempted** what we want at the centre: a typed, queryable, graph-shaped substrate that connects this corpus to the wider UFO/UAP discourse. `zvizdo/ufo-knowledge-base` has the schema for the surrounding context but not yet the new corpus; `zexiro/uap-disclosure-archive` has the corpus and similarity links but not the wider entity graph; `clubufo` has a polished RAG product but a single-corpus scope.
-- **The gap we should fill** is the substrate layer — an entity/event/claim model with page-level provenance — that the existing mirrors and RAG chat UIs can be re-pointed at, and that survives across every future release tranche.
+- **The Akamai/Playwright gotcha** is real — anyone building a download script needs to know this up front. The technique is preserved in our [vfp2/pursue-ufo-files](https://github.com/vfp2/pursue-ufo-files) clone and replicated independently in `Pump-OS/alien-files` and `toor11/ufo`.
+- **Live-mirroring with archival preservation** (`abigailhaddad/ufo-releases` daily GHA + preserves removed records) is a small but architecturally useful pattern for cross-tranche durability.
+- **The Claude-skill format is gaining real traction** — `ckpxgfnksd-max/uap-release-analyzer` is the highest-starred repo in this survey at 48 ★, and explicitly anticipates being re-run across future tranches and adjacent corpora (FBI Vault, NARA, AARO). Worth understanding what its 11-section REPORT.md captures and whether our work should produce a Claude skill as one of its outputs.
+- **The closest peer to our analytical ambitions is `sanderlegit/uap`** — it has an actual SQLite incident DB, a cross-reference graph, and targeted analyses (FBI, Apollo, redactions). Worth examining its schema directly to understand what level of entity granularity is reachable from the released documents at this stage. Even at 0 stars and 3 commits, this is the most architecturally relevant peer.
+- **No one has yet attempted** what we want at the centre: a typed, queryable, n-ary or hyperedge-based substrate that connects this corpus to the wider UFO/UAP discourse with page-level provenance and cross-tranche bitemporality. `zvizdo/ufo-knowledge-base` has the schema for the surrounding context but not yet the new corpus; `zexiro/uap-disclosure-archive` has the corpus and similarity links but not the wider entity graph; `clubufo` has a polished RAG product but a single-corpus scope; `sanderlegit/uap` has structured analysis but with binary-edge SQLite and no provenance / cross-tranche layer.
+- **The gap we should fill** is the substrate layer — an entity/event/claim model (likely n-ary or hyperedge-based, per [architecture/01](architecture/01-hypergraph-hypothesis-and-prior-art.md)) with page-level provenance and cross-tranche bitemporality — that the existing mirrors and RAG chat UIs can be re-pointed at, and that survives across every future release tranche.
