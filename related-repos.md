@@ -8,6 +8,7 @@ Repos are grouped by what they're trying to do.
 
 ## Snapshot history
 
+- **2026-05-08, ~21:15 UTC** (release + ~8 hr): 20 GitHub projects tracked + 1 gist. **+4 new since previous snapshot**: `Colbyashi/UFO-Files` (curated bulk mirror with PDF→PNG photo extraction), `Ledatic-Empire/pursue` (only peer doing **Ed25519 cryptographic attestation per file** — architecturally novel), `NoobAIDeveloper/uap-watch` (tactical dashboard with Palantir-Blueprint styling), `SeanLikesData/ufo-scrape-guide` (catalogue of 13 Akamai-bypass approaches that don't work, + 4 reference scripts). **−0 deleted**. Notable star deltas: `uap-release-analyzer` 48→55, `UFO-USA` 33→39 (10 forks). First refresh executed via the new [`related-repos-refresh`](.claude/skills/related-repos-refresh/) skill rather than by hand.
 - **2026-05-08, ~19:30 UTC** (release + ~5 hr): 18 projects tracked. **+6 since first snapshot** (`uap-release-analyzer`, `uap` (sanderlegit), `alien-files`, `ufo-releases` (abigailhaddad), `WarGov` (wrek), `Chat-With-Aliens`, `ufo` (toor11), `uap-disclosure-tracker` (pre-release context)). **−1**: `davemorin/pursue-ufo-files` deleted; we have a local clone preserved at [vfp2/pursue-ufo-files](https://github.com/vfp2/pursue-ufo-files). Notable star deltas: `uap-release-analyzer` 0→48 (highest-traction), `UFO-USA` 26→33, `uap-release-01` 11→21.
 - **2026-05-08, ~17:50 UTC** (release + ~3 hr): initial snapshot, 12 projects tracked.
 
@@ -20,7 +21,7 @@ These projects mostly re-host the corpus, often with light reformatting. Useful 
 ### [vng9trmgr8-pixel/war-gov-ufo-release-1](https://github.com/vng9trmgr8-pixel/war-gov-ufo-release-1) — 2 ★
 *Created 2026-05-08 16:58 UTC.* Static-site mirror — 119 PDFs with summaries and thumbnails, plus 14 still images in a gallery. No framework: HTML/CSS/JS plus Python build scripts (`build_data.py`, `extract_text.py`) that turn the war.gov CSV manifest into a `data.json`. All file links point back to the official source rather than rehosting. Hosted on Vercel. ~5 commits. Useful as a reference for parsing the manifest.
 
-### [DenisSergeevitch/UFO-USA](https://github.com/DenisSergeevitch/UFO-USA) — 33 ★, 8 forks
+### [DenisSergeevitch/UFO-USA](https://github.com/DenisSergeevitch/UFO-USA) — 39 ★, 10 forks
 *Created 2026-05-08 14:46 UTC.* Converted-Markdown archive. 120 PDFs, 4,185 pages, OCR'd page-by-page via **Gemini AI at 200 DPI**, output as Markdown with YAML frontmatter. Includes conversion scripts, download logs, and a manifest tracking 4,174 successful conversions plus 11 errored pages. Probably the most directly consumable text corpus of the lot — if their OCR is clean we may not need to re-OCR. Currently the highest-starred *corpus* repo. We have a fork at [vfp2/UFO-USA](https://github.com/vfp2/UFO-USA).
 
 ### [Onebooming/US-WAR-GOV-UFO](https://github.com/Onebooming/US-WAR-GOV-UFO) — 0 ★
@@ -28,6 +29,12 @@ These projects mostly re-host the corpus, often with light reformatting. Useful 
 
 ### [wrek/WarGov](https://github.com/wrek/WarGov) — 0 ★
 *Created 2026-05-08 19:13 UTC.* Stated as "WarGov document archive and extracted markdown content" but currently empty. Tracking only — worth re-checking in a few hours.
+
+### [Colbyashi/UFO-Files](https://github.com/Colbyashi/UFO-Files) — 0 ★
+*Created 2026-05-08 19:41 UTC.* Curated bulk mirror — manually downloaded 157 of 161 documents (counting duplicates and retrieval errors), with embedded photos extracted from PDFs into stand-alone PNG files. Repository contains the actual files, not just scripts. README documents the gap between the source's listed 161 and the 157 successfully retrieved. Lighter than `vng9trmgr8-pixel/war-gov-ufo-release-1` and without its parsed `data.json` manifest, but the **photo-extraction sidecar is unique** in the survey — useful if we want to surface visual-only assets without re-extracting them ourselves.
+
+### [Ledatic-Empire/pursue](https://github.com/Ledatic-Empire/pursue) — 0 ★
+*Created 2026-05-08 20:32 UTC.* The only peer in the survey doing **cryptographic provenance / attestation**. Built in **Rail** (a "pure" language with no external runtime dependencies — no curl, no SQLite). Each downloaded document receives a **byte-level Ed25519 signature** binding the file to a timestamp ("pulse") and a witness key, producing tamper-evident archival records verifiable against a public key. Append-only JSONL manifest tracks file hashes, download status, and signatures. Public face at `ledatic.org/aliens`. **Architecturally directly relevant to our goals**: page-level provenance was framed in [architecture/02](architecture/02-peer-substrate-survey.md) as a `(documentId, pageId, charStart, charEnd)` tuple — Ledatic's per-file Ed25519 layer is one level above (whole-document attestation) but suggests a complementary pattern: every claim could carry a signature chain anchored to its source-document signature, giving cryptographic verifiability of the chain from page-MD to claim. Worth watching closely.
 
 ---
 
@@ -51,7 +58,10 @@ These go beyond mirroring: full-text search, OCR, RAG chat, or wiki-style cross-
 *Created 2026-05-08 04:14 UTC — about 13 hours **before** the war.gov release.* Pre-existing connected wiki of the UFO/UAP discourse: ~2,258 pages, ~29,000 wikilinks, covering 957 people, 406 concepts, 260 organisations, 138 incidents, 129 places, 103 documents, 84 programmes. Plain Markdown with YAML frontmatter, organised in `ufo-kb/wiki/` by entity type, raw sources in `ufo-kb/raw/`. Built with Claude Code custom skills (`kb-import`, `kb-query`, `kb-maintain`), embeddings index via `qmd`, Python YouTube-transcript ingestion, Obsidian-compatible. Explicitly frames itself as **mapping discourse, not adjudicating truth** — contested claims get conflict flags rather than resolution. As of this snapshot it does **not yet reference the war.gov release** (still 3 commits, no PURSUE references). This is the most interesting peer for our purposes: a mature schema for the surrounding context that the new corpus can be plugged into.
 
 ### [ChatWithAliens/Chat-With-Aliens](https://github.com/ChatWithAliens/Chat-With-Aliens) — 0 ★
-*Created 2026-05-08 16:55 UTC.* RAG chat across 51 documents (3,037 pages, 2,416 indexed chunks) from FBI / CIA / DoD UFO/UAP files — **broader than just war.gov**, dipping into the older Vault. Five named "personas" (Affa, Ponnar, Monka, Orthon, Zemkla) interactively answer in-character using grounded retrieval. Stack: React/Vite frontend, Node.js/Express backend, **PostgreSQL with full-text search** (no vector DB), GPT-4o for generation. Architecturally simpler than the pgvector RAG path: classical FTS + LLM-over-retrieved-chunks. Notable mostly for the breadth of corpus and the choice of FTS-not-vectors; the persona framing is a UX layer, not an architectural one.
+*Created 2026-05-08 16:55 UTC.* RAG chat across 51 documents (3,037 pages, 2,416 indexed chunks) from FBI / CIA / DoD UFO/UAP files — **broader than just war.gov**, dipping into the older Vault. Five named "personas" (Affa, Ponnar, Monka, Orthon, Zemkla) interactively answer in-character using grounded retrieval. Stack: React/Vite frontend, Node.js/Express backend, **PostgreSQL with full-text search** (no vector DB), GPT-4o for generation. Architecturally simpler than the pgvector RAG path: classical FTS + LLM-over-retrieved-chunks. Notable mostly for the breadth of corpus and the choice of FTS-not-vectors; the persona framing is a UX layer, not an architectural one. (Note: as confirmed by [architecture/02](architecture/02-peer-substrate-survey.md), the public repo is documentation-only — actual implementation code is not committed.)
+
+### [NoobAIDeveloper/uap-watch](https://github.com/NoobAIDeveloper/uap-watch) — 0 ★, 9 commits
+*Created 2026-05-08 19:38 UTC.* Independent dashboard mirroring the war.gov release with a deliberate **Palantir-Blueprint-inspired military-intelligence aesthetic** — described by its author as "tactical." Next.js / TypeScript / Tailwind. Deployed at `uap-watch-flame.vercel.app`. Notable mostly as a UX data point: the only peer explicitly leaning into intelligence-product visual language. Architecturally a thin web shell over the manifest, no entity model.
 
 ---
 
@@ -60,6 +70,9 @@ These go beyond mirroring: full-text search, OCR, RAG chat, or wiki-style cross-
 ### [toor11/ufo](https://github.com/toor11/ufo) — 0 ★
 *Created 2026-05-08 17:51 UTC.* Bulk downloader for 161 records (PDFs, images, videos), preserving original filenames. Python + **Playwright (Chromium, visible)** — same Akamai-bot-detection bypass strategy as the deleted davemorin script. Tighter scope: just download, no analysis layer. Useful as a fallback or cross-check tool.
 
+### [SeanLikesData/ufo-scrape-guide](https://github.com/SeanLikesData/ufo-scrape-guide) — 0 ★
+*Created 2026-05-08 20:01 UTC.* Field guide + 4 Node.js reference scripts (run via `npm install && npm run all`). The README catalogues **13 approaches that don't work** against war.gov's Akamai protection (curl, headless Chrome, Playwright requests, etc.) and documents the working pattern: real Chrome + visible window + the manifest at `/Portals/1/Interactive/2026/UFO/uap-csv.csv`. The negative-results catalogue is the highest-value part — saves anyone else from rediscovering each failure mode. Pairs well with our preserved [`vfp2/pursue-ufo-files`](https://github.com/vfp2/pursue-ufo-files) and the stronger Akamai bypass in [`abigailhaddad/ufo-releases`](https://github.com/abigailhaddad/ufo-releases).
+
 ---
 
 ## Datasets and analyser skills
@@ -67,7 +80,7 @@ These go beyond mirroring: full-text search, OCR, RAG chat, or wiki-style cross-
 ### [ckpxgfnksd-max/uap-release-01](https://github.com/ckpxgfnksd-max/uap-release-01) — 21 ★, 5 forks
 *Created 2026-05-08 14:51 UTC.* "Mirror of the May 2026 war.gov PURSUE UAP/UFO release (132 files, 2.4 GB). LFS-backed example corpus for the uap-release-analyzer skill." Most useful as a **canonical, hash-stable, LFS-backed dataset** — the description even positions it as a fixture for evaluating an analyser tool. If we want a reproducible test corpus this may be the cleanest pin.
 
-### [ckpxgfnksd-max/uap-release-analyzer](https://github.com/ckpxgfnksd-max/uap-release-analyzer) — **48 ★, 7 forks** *(highest traction in the survey)*
+### [ckpxgfnksd-max/uap-release-analyzer](https://github.com/ckpxgfnksd-max/uap-release-analyzer) — **55 ★, 8 forks** *(highest traction in the survey)*
 *Created 2026-05-08 14:32 UTC — earliest tool repo of any tracked.* A **Claude Code skill** that turns a folder of declassified UAP/UFO documents into a structured analysis. Workflow: (1) inventory PDFs by agency / type / page count, (2) extract text via `pdfplumber` (flagging scanned files needing OCR), (3) tally token frequencies, surface entities, and characterise redaction patterns, (4) emit a standardised **11-section `REPORT.md`** with top terms, locations, agency breakdowns, and cross-document patterns. Tuned for UAP release structure (recognises agency filename prefixes, FOIA exemption codes, war.gov quirks) but explicitly designed to be reusable across **future PURSUE tranches and adjacent corpora (FBI Vault, NARA, AARO)** by adding new prefix mappings. Notable for being the only project that explicitly anticipates re-running against new tranches as they land — directly relevant to our cross-tranche durability goal. The 48 stars suggest the Claude-skill packaging format is gaining real momentum.
 
 ---
