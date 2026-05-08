@@ -29,12 +29,14 @@ We are aiming for **a structured, durable substrate** — not just a chat box bo
 
 The bet: post-release, raw curiosity will be served by dozens of mirrors and chat UIs within hours. **Strategic value compounds over weeks**, in the substrate that lets you ask second- and third-order questions, re-run them when the next tranche drops, and trust the citations.
 
-## What this initial commit contains
+## What this repo contains
 
-This is the seed commit. It does not yet ingest documents — that is intentional. We are getting our reference frame straight first.
+We are getting our reference frame straight before ingesting documents.
 
 - [README.md](README.md) — this file.
 - [related-repos.md](related-repos.md) — a survey of other GitHub projects already working on the same release, with notes on each one's approach, tech, and stage. Knowing what others are building helps us not duplicate effort and identifies useful prior art (data manifests, OCR outputs, indexes) we may be able to consume rather than rebuild.
+- [architecture/](architecture/) — the ongoing architectural discussion. Numbered entries; each one is open until superseded.
+  - [01 — Hypergraph hypothesis and prior art](architecture/01-hypergraph-hypothesis-and-prior-art.md) — does the substrate want to be a true hypergraph? Survey of historic and current UFO/UAP database architectures, candidate n-ary stores (TypeDB, RDF-star, Datomic, Neo4j+reification), and an early take that the answer is probably hybrid pending document-content evidence.
 
 ## Roadmap (provisional)
 
