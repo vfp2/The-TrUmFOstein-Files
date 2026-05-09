@@ -20,6 +20,33 @@ OUT_GRAPH  = REPO / "viewer" / "public" / "graph.json"
 OUT_DOCS   = REPO / "viewer" / "public" / "docs"
 OUT_DOCS.mkdir(parents=True, exist_ok=True)
 
+# Source manifest (lives outside the repo on the user's machine — pulled
+# in here at export time to enrich documents with DVIDS video metadata
+# that we don't store in the substrate itself).
+MANIFEST   = Path("/home/soliax/dev/vfp2/ufouap/data/records.json")
+
+
+def load_video_pairs() -> dict[str, dict[str, Any]]:
+    """Map doc-NNN → {dvids_id, video_title, video_embed_url, has_pdf}.
+    Returns empty dict if the manifest isn't reachable (deploy-time builds
+    will fall back to the static graph.json that has these baked in)."""
+    if not MANIFEST.exists():
+        return {}
+    recs = json.loads(MANIFEST.read_text())
+    out: dict[str, dict[str, Any]] = {}
+    for idx, r in enumerate(recs, start=1):
+        dvids_id = r.get("dvids_id")
+        if not dvids_id:
+            continue
+        out[f"doc-{idx:03d}"] = {
+            "dvids_id":        dvids_id,
+            "video_title":     r.get("video_title") or "",
+            "video_embed_url": f"https://www.dvidshub.net/video/embed/{dvids_id}",
+            "video_dvids_url": f"https://www.dvidshub.net/video/{dvids_id}",
+            "has_pdf":         bool(r.get("pdf_link")),
+        }
+    return out
+
 
 def fetch_entities(tx, kind: str, attr_names: list[str]) -> list[dict[str, Any]]:
     """For a given entity kind, return [{id, attrs:{...}}] with the named
@@ -102,6 +129,8 @@ def main() -> None:
         "foia-exemption": "foia-code",
     }
 
+    video_meta = load_video_pairs()
+
     with driver() as d:
         # ── Tier 1 entities ────────────────────────────────────────────
         with d.transaction(DB, TransactionType.READ) as tx:
@@ -109,6 +138,23 @@ def main() -> None:
                 ents = fetch_entities(tx, kind, ans)
                 lk = LABEL_KEY[kind]
                 for e in ents:
+                    # Inject DVIDS video metadata for documents with a
+                    # paired or video-only DVIDS record.
+                    if kind == "document":
+                        vm = video_meta.get(e["id"])
+                        if vm:
+                            e["attrs"]["dvids_id"]        = vm["dvids_id"]
+                            e["attrs"]["video_embed_url"] = vm["video_embed_url"]
+                            e["attrs"]["video_dvids_url"] = vm["video_dvids_url"]
+                            if vm["video_title"]:
+                                e["attrs"]["video_title"] = vm["video_title"]
+                            # Video-only records (no companion PDF) get a
+                            # dedicated shape so the viewer can pick a
+                            # video-first layout.
+                            if not vm["has_pdf"] and (
+                                e["attrs"].get("shape") in ("unknown", None)
+                            ):
+                                e["attrs"]["shape"] = "video"
                     label_val = e["attrs"].get(lk) or e["attrs"].get("identifier", e["id"])
                     label = str(label_val) if not isinstance(label_val, list) else str(label_val[0])
                     add_node(e["id"], kind, label[:120], e["attrs"])

@@ -133,16 +133,20 @@ function DocumentBody({
 }: { node: GraphNode; bundle: DocBundle | null; loading: boolean }) {
   const [tab, setTab] = useState<"viewer" | "claims" | "pages">("viewer");
 
-  const filename = String(node.attrs.filename ?? "");
-  const url      = String(node.attrs.url ?? "");
-  const shape    = String(node.attrs.shape ?? "");
+  const filename       = String(node.attrs.filename ?? "");
+  const url            = String(node.attrs.url ?? "");
+  const shape          = String(node.attrs.shape ?? "");
+  const videoEmbedUrl  = String(node.attrs.video_embed_url ?? "");
+  const videoDvidsUrl  = String(node.attrs.video_dvids_url ?? "");
+  const dvidsId        = String(node.attrs.dvids_id ?? "");
 
   // Local visual-artifact assets bundled in /public/visual-artifacts/.
-  const localAsset = filename
-    ? `/visual-artifacts/${filename}` : "";
-  const isPng    = filename.toLowerCase().endsWith(".png");
-  const isVideo  = filename.toLowerCase().match(/\.(mp4|webm|mov)$/);
-  const hasLocal = isPng || (shape === "visual-artifact" && filename.toLowerCase().endsWith(".pdf"));
+  const localAsset = filename ? `/visual-artifacts/${filename}` : "";
+  const isPng      = filename.toLowerCase().endsWith(".png");
+  const isLocalVid = filename.toLowerCase().match(/\.(mp4|webm|mov)$/);
+  const hasLocal   = isPng || (shape === "visual-artifact" && filename.toLowerCase().endsWith(".pdf"));
+  const hasVideo   = !!videoEmbedUrl;
+  const hasPdf     = url.toLowerCase().endsWith(".pdf") || filename.toLowerCase().endsWith(".pdf");
 
   return (
     <section className="space-y-3">
@@ -163,43 +167,80 @@ function DocumentBody({
       </div>
 
       {tab === "viewer" && (
-        <div className="space-y-2">
-          {isPng && (
-            <img src={localAsset} alt={node.label}
-                 className="w-full rounded border border-stroke/40" />
-          )}
-          {!isPng && isVideo && (
-            <video src={url} controls className="w-full rounded" />
-          )}
-          {!isPng && !isVideo && hasLocal && (
-            <iframe
-              src={localAsset}
-              className="w-full h-[60vh] rounded border border-stroke/40 bg-white"
-              title={node.label}
-            />
-          )}
-          {!isPng && !isVideo && !hasLocal && url && (
-            <div className="text-sm text-fg-mute leading-relaxed">
-              Hosted on war.gov (Akamai) — open externally:
-              <div className="mt-2">
-                <a href={url} target="_blank" rel="noopener noreferrer"
-                   className="text-accent hover:underline break-all">{url}</a>
+        <div className="space-y-3">
+          {/* DVIDS video embed — for any document with a paired or
+              video-only DVIDS record. */}
+          {hasVideo && (
+            <div className="space-y-1">
+              <div className="text-[11px] uppercase tracking-wider text-fg-mute flex items-center gap-2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                DVIDS video {dvidsId && `· id ${dvidsId}`}
               </div>
+              <div className="aspect-video w-full rounded overflow-hidden border border-stroke/40 bg-black">
+                <iframe
+                  src={videoEmbedUrl}
+                  className="w-full h-full"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  title={`DVIDS ${dvidsId}`}
+                />
+              </div>
+              {videoDvidsUrl && (
+                <a href={videoDvidsUrl} target="_blank" rel="noopener noreferrer"
+                   className="text-xs text-accent hover:underline">open on dvidshub.net ↗</a>
+              )}
             </div>
           )}
-          {!url && (
-            <div className="text-sm text-fg-mute">No file link in the manifest.</div>
+
+          {/* PDF / image / local-file viewer */}
+          {(hasPdf || hasLocal) && (
+            <div className="space-y-1">
+              {hasVideo && (
+                <div className="text-[11px] uppercase tracking-wider text-fg-mute">
+                  Companion PDF
+                </div>
+              )}
+              {isPng && (
+                <img src={localAsset} alt={node.label}
+                     className="w-full rounded border border-stroke/40" />
+              )}
+              {!isPng && isLocalVid && (
+                <video src={url} controls className="w-full rounded" />
+              )}
+              {!isPng && !isLocalVid && hasLocal && (
+                <iframe
+                  src={localAsset}
+                  className="w-full h-[60vh] rounded border border-stroke/40 bg-white"
+                  title={node.label}
+                />
+              )}
+              {!isPng && !isLocalVid && !hasLocal && hasPdf && url && (
+                <div className="text-sm text-fg-mute leading-relaxed">
+                  Hosted on war.gov (Akamai) — open externally:
+                  <div className="mt-2">
+                    <a href={url} target="_blank" rel="noopener noreferrer"
+                       className="text-accent hover:underline break-all">{url}</a>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {!hasVideo && !hasPdf && !hasLocal && (
+            <div className="text-sm text-fg-mute">
+              {url
+                ? <a href={url} target="_blank" rel="noopener noreferrer"
+                     className="text-accent hover:underline break-all">{url}</a>
+                : "No file or video link in the manifest."}
+            </div>
           )}
         </div>
       )}
 
-      {tab === "claims" && (
-        <ClaimsList loading={loading} bundle={bundle} />
-      )}
-
-      {tab === "pages" && (
-        <PagesList loading={loading} bundle={bundle} />
-      )}
+      {tab === "claims" && <ClaimsList loading={loading} bundle={bundle} />}
+      {tab === "pages"  && <PagesList loading={loading} bundle={bundle} />}
     </section>
   );
 }
