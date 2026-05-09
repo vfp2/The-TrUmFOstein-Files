@@ -1,0 +1,13 @@
+# Q2 — incidents witnessed by both USPER5 and USPER6.
+# Demonstrates the n-ary witness primitive working end-to-end. Should return
+# all 4 Western US Event incidents (Orbs Launching Orbs, Large Fiery Orb,
+# Dark Kite, Transparent Kite). Studio's graph view shows USPER5 and USPER6
+# both connected to each `incident-event` via the `witness` role.
+
+match
+  $u5 isa person, has anonymised-token "USPER5";
+  $u6 isa person, has anonymised-token "USPER6";
+  $ie isa incident-event,
+     links (incident: $i, witness: $u5, witness: $u6);
+  $i has name $n;
+select $n;

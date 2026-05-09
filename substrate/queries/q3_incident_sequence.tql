@@ -1,0 +1,12 @@
+# Q3 — incident-sequence relations (cross-incident references).
+# Currently returns Dark Kite -> Transparent Kite ("~30 minutes after").
+# The schema supports kinds: temporal-sequence, comparative, re-described,
+# follow-up. Studio's graph view shows the directed edge between incidents.
+
+match
+  $seq isa incident-sequence,
+     has sequence-kind $k,
+     links (source-incident: $src, target-incident: $tgt);
+  $src has name $sn;
+  $tgt has name $tn;
+select $sn, $tn, $k;

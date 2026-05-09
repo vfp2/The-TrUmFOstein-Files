@@ -1,0 +1,14 @@
+# Q6 — Western US Event subgraph: 4 incidents, 7 USPER persons, 1 sequence
+# link, all connected via the multi-incident-deck document.
+# This is the most visually rich subgraph for Studio's graph view —
+# illustrates multi-incident-per-document, anonymised-but-typed witnesses,
+# and incident-to-incident references.
+
+match
+  $doc isa document, has shape "multi-incident-deck";
+  $ie isa incident-event,
+     links (incident: $i, originating-document: $doc);
+  $i has name $i_name;
+  $usper isa person, has anonymised-token $token;
+  $ie links (witness: $usper);
+select $i_name, $token;

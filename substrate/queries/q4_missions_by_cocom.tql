@@ -1,0 +1,9 @@
+# Q4 — DOW Mission Reports grouped by Combatant Command (COCOM).
+# The `mission` relation is the top-level hierarchical hyperedge from
+# entry 04. COCOM is one of its role-typed participants. Expected:
+# 23 USCENTCOM, 1 USEUCOM, 1 redacted (the COCOM itself was [1.4a]).
+
+match
+  $m  isa mission, links (cocom-unit: $cc);
+  $cc has name $n;
+reduce $c = count groupby $n;

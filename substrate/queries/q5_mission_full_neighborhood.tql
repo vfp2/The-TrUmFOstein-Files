@@ -1,0 +1,18 @@
+# Q5 — full neighbourhood of one INHERENT RESOLVE mission (its document,
+# operation, units, contained incident, classification). This is the query
+# to run in Studio's graph view to see the hierarchical hyperedge structure
+# expand visually.
+#
+# Pick any document — D28 (the manifest-disagreement document) is a good
+# choice since it has rich participants.
+
+match
+  $doc isa document, has identifier "doc-046";
+  $m isa mission, links (mission-document: $doc);
+  $m links (operation: $op);
+  $op has operation-name $op_name;
+  $m links (cocom-unit: $cocom);
+  $cocom has name $cocom_name;
+  $m links (originating-unit: $unit);
+  $unit has name $unit_name;
+select $op_name, $cocom_name, $unit_name;

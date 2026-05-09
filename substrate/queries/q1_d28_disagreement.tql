@@ -1,0 +1,13 @@
+# Q1 — D28 manifest-vs-body disagreement (the canonical entry-04 finding).
+# Returns the document filename, the field in disagreement, and BOTH the
+# manifest claim and the body claim verbatim. Studio's graph view shows the
+# `manifest-disagreement` hyperedge with its three roles populated.
+
+match
+  $md isa manifest-disagreement,
+     has disagreement-field $f,
+     links (document-of: $d, manifest-claim: $mc, body-claim: $bc);
+  $d  has filename $fn;
+  $mc has text-content $mtxt;
+  $bc has text-content $btxt;
+select $fn, $f, $mtxt, $btxt;
