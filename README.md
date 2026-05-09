@@ -1,5 +1,7 @@
 # The TrUmFOstein Files
 
+> **Live 3D viewer**: [**the-trumfostein-files.vercel.app**](https://the-trumfostein-files.vercel.app) — navigate the substrate as a 3D knowledge graph with embedded PDFs, sensor imagery, structured claims, and full search.
+
 A working repository for ingesting, structuring, and strategically analysing the UAP/UFO documents released by the U.S. Department of War on **8 May 2026** under the **PURSUE** programme (Presidential Unsealing and Reporting System for UAP Encounters), at <https://www.war.gov/UFO/>.
 
 ## Background

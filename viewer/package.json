@@ -1,0 +1,29 @@
+{
+  "name": "trumfostein-viewer",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "export-graph": "cd .. && python3 substrate/export/export_graph.py"
+  },
+  "dependencies": {
+    "next": "^16.2.6",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-force-graph-3d": "^1.29.1",
+    "three": "^0.184.0",
+    "three-spritetext": "^1.10.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.0",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@types/three": "^0.184.0",
+    "@vercel/config": "^0.3.0",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^5.7.0"
+  }
+}

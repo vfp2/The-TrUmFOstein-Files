@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-deep:        oklch(0.155 0.04 270);
+  --color-bg-mid:         oklch(0.190 0.04 270);
+  --color-bg-elev:        oklch(0.245 0.04 270);
+  --color-stroke:         oklch(0.32 0.04 270);
+  --color-stroke-strong:  oklch(0.45 0.06 270);
+  --color-fg-mute:        oklch(0.62 0.02 270);
+  --color-fg:             oklch(0.92 0.02 270);
+  --color-accent:         oklch(0.78 0.18 235);
+  --color-anomaly:        oklch(0.74 0.20 35);
+  --color-witness:        oklch(0.78 0.18 350);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background:
+    radial-gradient(1200px 800px at 25% 15%, oklch(0.230 0.06 260) 0%, transparent 70%),
+    radial-gradient(900px 700px at 80% 85%, oklch(0.215 0.05 320) 0%, transparent 70%),
+    var(--color-bg-deep);
+  color: var(--color-fg);
+  font-family: ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "Inter", sans-serif;
+  font-feature-settings: "ss01", "cv11";
+}
+
+/* tiny starfield */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 14% 22%, white 99%, transparent 100%),
+    radial-gradient(1px 1px at 73% 9%,  white 99%, transparent 100%),
+    radial-gradient(1px 1px at 31% 71%, white 99%, transparent 100%),
+    radial-gradient(1px 1px at 88% 41%, white 99%, transparent 100%),
+    radial-gradient(1px 1px at 60% 87%, white 99%, transparent 100%),
+    radial-gradient(1px 1px at 50% 50%, white 99%, transparent 100%),
+    radial-gradient(1px 1px at 8%  64%, white 99%, transparent 100%),
+    radial-gradient(1px 1px at 95% 80%, white 99%, transparent 100%);
+  background-size: 800px 800px;
+  background-repeat: repeat;
+  opacity: 0.20;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glass {
+  background: color-mix(in oklch, var(--color-bg-elev) 78%, transparent);
+  backdrop-filter: blur(14px) saturate(120%);
+  border: 1px solid var(--color-stroke);
+  border-radius: 14px;
+}
+
+.scroll-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: var(--color-stroke);
+  border-radius: 4px;
+}
+.scroll-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--color-stroke-strong);
+}
