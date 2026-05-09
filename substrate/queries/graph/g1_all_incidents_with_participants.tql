@@ -1,0 +1,8 @@
+# G1 — every incident-event with its full role-player fanout.
+# Studio renders ~22 incident-event nodes, each connected to its incident,
+# anchor-time, anchor-location (where present), originating-document, and
+# witnesses. This is the canonical view of the n-ary hyperedge primitive.
+
+match
+  $ie isa incident-event;
+  $ie links (incident: $i, originating-document: $d);

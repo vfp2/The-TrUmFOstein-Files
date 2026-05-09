@@ -1,0 +1,19 @@
+# G7 — D28's page-and-claim provenance graph (one page only, for tractability).
+# Returns: the document, its page-1 entity, the has-page relation between them,
+# and a sample of claim-provenance relations linking claims on that page back
+# to the document and page.
+#
+# Demonstrates page-level provenance — the (claim, page, document) tuple from
+# architecture/02. Each `claim` node has a `kind` attribute on hover (factual,
+# witness, metadata, redacted_placeholder, etc.).
+#
+# Note: D28 has ~270 vocab claims across 6 pages; this query limits to page 1
+# to keep the graph readable. To explore another page, change the page-number
+# filter.
+
+match
+  $doc isa document, has identifier "doc-046";
+  $p isa page, has page-number 1;
+  $hp isa has-page, links (document: $doc, page: $p);
+  $cp isa claim-provenance, links (document: $doc, page: $p, claim: $c);
+limit 30;

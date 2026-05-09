@@ -1,0 +1,11 @@
+# G5 — every mission and its operation, drawn as a graph.
+# Operations cluster in the layout: INHERENT RESOLVE will be the largest
+# hub (10 missions), with smaller operations scattered. This is the same
+# data as the tabular q4_missions_by_cocom but rendered as a graph so you
+# can see the relative density at a glance.
+#
+# Click any operation node to see all the missions that link to it.
+
+match
+  $m isa mission;
+  $m links (operation: $op, mission-document: $doc);

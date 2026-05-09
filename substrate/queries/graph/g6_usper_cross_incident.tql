@@ -1,0 +1,15 @@
+# G6 — incidents jointly witnessed by USPER5 AND USPER6, as a graph.
+# Two person nodes (USPER5, USPER6), four incident-event hyperedge nodes
+# (Orbs Launching Orbs, Large Fiery Orb, Dark Kite, Transparent Kite),
+# four incident nodes attached. Each incident-event hyperedge has TWO
+# witness edges going to the same pair of persons — the visual signature
+# of a paired anonymised witness across multiple incidents.
+#
+# This is the n-ary witness primitive made visible. Tabular q2 returns a
+# list of incident names; this returns the actual hyperedge structure.
+
+match
+  $u5 isa person, has anonymised-token "USPER5";
+  $u6 isa person, has anonymised-token "USPER6";
+  $ie isa incident-event;
+  $ie links (incident: $i, witness: $u5, witness: $u6);

@@ -1,0 +1,15 @@
+# G3 — D28's complete mission hyperedge, expanded.
+# Studio draws the document node at the centre, then the mission relation
+# node connected via mission-document, with edges to its operation, ops-center
+# unit, MAJCOM unit, COCOM unit, originating-unit, and contained incident.
+# This is the canonical visualisation of the *hierarchical hyperedge*
+# argument from architecture/04 — the recursive-composition that pushed the
+# store choice toward TypeDB.
+#
+# Then double-click the incident node to expand to its incident-event hyperedge
+# and on to the time-anchor.
+
+match
+  $doc isa document, has identifier "doc-046";
+  $m isa mission;
+  $m links (mission-document: $doc);

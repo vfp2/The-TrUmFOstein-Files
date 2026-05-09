@@ -1,0 +1,16 @@
+# G2 — the Western US Event multi-incident-deck subgraph.
+# Returns: the document, all 4 of its incidents, every incident-event hyperedge
+# (with witnesses USPER1-7 attached as anchor-time/anchor-location/witness
+# role-players), and the temporal-sequence edge between Dark Kite and
+# Transparent Kite.
+#
+# In Studio's graph view this is the cleanest visual demonstration of the
+# multi-incident-per-document pattern + anonymised-witness participants +
+# incident-to-incident references — three architectural decisions visible
+# in one canvas.
+
+match
+  $doc isa document, has shape "multi-incident-deck";
+  $ie isa incident-event;
+  $ie links (incident: $i, originating-document: $doc);
+  $seq isa incident-sequence;

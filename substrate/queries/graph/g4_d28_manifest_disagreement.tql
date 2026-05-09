@@ -1,0 +1,11 @@
+# G4 — D28's manifest-vs-body disagreement, as a graph.
+# Studio shows the manifest-disagreement relation node at the centre, with
+# edges to: the document, the manifest-side claim ("location:East China Sea"),
+# and the body-side claim ("location:Iraq..."). Both claims show their full
+# text-content on hover/inspection.
+#
+# This is the entry-04 finding made visible: trust the PDF, not the manifest.
+
+match
+  $md isa manifest-disagreement;
+  $md links (document-of: $doc, manifest-claim: $mc, body-claim: $bc);

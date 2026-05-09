@@ -1,0 +1,14 @@
+# G8 — every visual-artifact document and its claude-vision-derived claim.
+# 33 document nodes and 33 claim nodes connected via 33 claim-provenance
+# relations. Each claim node carries the rich Claude-vision description
+# (kind=visual_artifact, extraction-method=claude-vision) on hover.
+#
+# This is how the FBI Photo A/B series and the composite sketch surface
+# visually in the substrate. To see one specific document's image
+# description in detail, click the claim node and Studio will show its
+# text-content and depicted-subject attributes.
+
+match
+  $d isa document, has shape "visual-artifact";
+  $c isa claim, has kind "visual_artifact";
+  $cp isa claim-provenance, links (document: $d, claim: $c);
