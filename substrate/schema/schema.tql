@@ -1,0 +1,407 @@
+#
+# TrUmFOstein Files — substrate schema (TypeDB 3.x)
+#
+# Architecture:  see ../../architecture/05-typedb-decision-and-schema.md
+# Status:        v0 — committed for the May 8 2026 PURSUE release
+#
+
+define
+
+# ─── Attribute types ────────────────────────────────────────────────────────
+
+attribute name           value string;
+attribute identifier     value string;     # generic ID slot for FK-like joins
+attribute filename       value string;
+attribute sha256         value string;
+attribute url            value string;
+attribute text-content   value string;
+attribute char-start     value integer;
+attribute char-end       value integer;
+attribute page-number    value integer;
+attribute total-pages    value integer;
+attribute file-size      value integer;
+attribute extraction-method value string;  # regex|gemini|pdfplumber|tesseract|gpt-4o|claude-vision|manual
+
+# Claim taxonomy
+attribute kind value string;       # ∈ {factual, witness, speculation, instruction,
+                                    #     procedural, metadata, analytical_assessment,
+                                    #     visual_artifact, redacted_placeholder}
+attribute redaction-subkind value string;  # ∈ {redacted_inline, redacted_block, redacted_whole_page}
+attribute depicted-subject value string;   # for kind=visual_artifact
+attribute derivation-source value string;  # for kind=analytical_assessment
+
+# Document-shape taxonomy
+attribute shape value string;
+# ∈ { mission-report, range-fouler-debrief, crew-transcript, state-cable,
+#     fbi-hq-section, multi-incident-deck, email-correspondence,
+#     visual-artifact, nara-historical, unknown }
+
+# Manifest tracking (abigailhaddad pattern)
+attribute first-seen-at  value datetime;
+attribute last-seen-at   value datetime;
+attribute removed-from-source value boolean;
+attribute acquisition-status value string;  # downloaded|download_failed|not_attempted|removed
+
+# Disagreement tracking
+attribute disagreement-field value string;  # location|title|agency|incident-date|...
+
+# Common
+attribute description    value string;
+attribute released-at    value datetime;
+attribute incident-date  value string;       # free-text date as it appears in the source
+attribute place-name     value string;
+attribute icao-code      value string;       # OKAS, LICZ, OBBI, ...
+attribute mgrs-grid      value string;       # 38SKC63, 36SYE68..., (partials kept verbatim)
+attribute lat            value double;
+attribute lon            value double;
+
+attribute zulu-dtg       value string;       # 201740:00ZSEP24
+attribute year           value integer;
+attribute period         value string;       # "dusk", "pre-dawn", ...
+
+# Anonymisation tokens
+attribute anonymised-token value string;     # USPER1, USPER2, [1.4a], ...
+attribute foia-code      value string;       # (b)(1), (b)(3), (b)(6), (b)(7), 1.4a, 3.5c
+
+# Classification
+attribute classification-level value string;  # SECRET, TOP SECRET, UNCLASSIFIED, ...
+attribute caveat         value string;        # REL TO USA, FVEY; NOFORN; FOUO; CUI
+
+# Mission/operation
+attribute operation-name value string;        # INHERENT RESOLVE, OP HUMMER SICKLE, ...
+attribute domain         value string;        # AIR / SEA / LAND
+attribute majcom         value string;        # ACC, AFSOC, ...
+attribute cocom          value string;        # USCENTCOM, USEUCOM, USINDOPACOM, ...
+attribute report-type    value string;        # MISREP, debrief, cable, memo
+attribute mission-type   value string;        # ARMED OVERWATCH, ISR, RECONNAISSANCE, ...
+attribute ato            value string;        # tasking order ID
+attribute callsign       value string;
+attribute tail-number    value string;
+attribute hull-number    value string;
+attribute vessel-class   value string;        # SLAVA, GORSHKOV, UDALOY, ...
+attribute craft-type     value string;        # UAP, SU-30, SU-27/35, B-52, IL-38, A-50U, ...
+attribute sensor-type    value string;        # FMV, IR, EO, SWIR, MX-20, MX-25, NVG, radar, ...
+attribute certainty      value string;        # POSSIBLE, PROBABLE, CONFIRMED
+attribute physical-state value string;        # Solid, ...
+attribute observer-assessment value string;   # Benign, ...
+
+# Activity
+attribute activity-description value string;
+attribute observation-method value string;    # FMV, NVG, bare-eye, radar, ...
+
+# Disagreement axis (for contradicts/manifest-disagreement)
+attribute axis value string;                   # date|location|morphology|witness-count|sensor-modality|title|agency
+
+# Sequence kind
+attribute sequence-kind value string;          # temporal-sequence|comparative|re-described|follow-up
+
+
+# ─── Entity types ──────────────────────────────────────────────────────────
+
+entity document
+    owns name,
+    owns filename,
+    owns sha256,
+    owns url,
+    owns description,
+    owns shape,
+    owns released-at,
+    owns first-seen-at,
+    owns last-seen-at,
+    owns removed-from-source,
+    owns acquisition-status,
+    owns total-pages,
+    owns file-size,
+    owns identifier @key;
+
+entity page
+    owns page-number,
+    owns text-content,
+    owns identifier @key;
+
+entity claim
+    owns text-content,
+    owns kind,
+    owns redaction-subkind,
+    owns depicted-subject,
+    owns derivation-source,
+    owns char-start,
+    owns char-end,
+    owns extraction-method,
+    owns identifier @key;
+
+entity agency
+    owns name,
+    owns identifier @key;
+
+# Participant — abstract supertype
+entity participant @abstract,
+    owns name,
+    owns identifier @key;
+
+entity person sub participant,
+    owns anonymised-token;        # USPER tokens or [1.4a] tokens
+
+entity unit sub participant;       # 50 ATKS, 609 CAOC, 16 SOS, 163 AW, ...
+
+entity asset sub participant,
+    owns callsign,
+    owns tail-number,
+    owns anonymised-token;         # often [1.4a]-redacted
+
+entity sensor sub participant,
+    owns sensor-type;
+
+entity vessel sub participant,
+    owns vessel-class,
+    owns hull-number;
+
+entity craft sub participant,
+    owns craft-type,
+    owns certainty;                # for "ONE PROBABLE SU-27/35" etc.
+
+entity operation
+    owns operation-name,
+    owns identifier @key;
+
+entity location
+    owns place-name,
+    owns icao-code,
+    owns mgrs-grid,
+    owns lat,
+    owns lon,
+    owns identifier @key;
+
+entity time-anchor
+    owns zulu-dtg,
+    owns year,
+    owns period,
+    owns identifier @key;
+
+entity classification
+    owns classification-level,
+    owns caveat,
+    owns identifier @key;
+
+entity foia-exemption
+    owns foia-code,
+    owns identifier @key;
+
+entity incident
+    owns name,
+    owns description,
+    owns identifier @key;
+
+
+# ─── Relations (the n-ary primitives) ──────────────────────────────────────
+
+# claim provenance — ties a claim to its page-and-document origin
+relation claim-provenance
+    relates claim,
+    relates page,
+    relates document;
+claim plays claim-provenance:claim;
+page plays claim-provenance:page;
+document plays claim-provenance:document;
+
+# document-page hierarchy
+relation has-page
+    relates document,
+    relates page;
+document plays has-page:document;
+page plays has-page:page;
+
+# document-agency
+relation issued-by
+    relates document,
+    relates agency;
+document plays issued-by:document;
+agency plays issued-by:agency;
+
+# top-level incident — n-ary participants
+relation incident-event
+    relates incident,
+    relates anchor-time,
+    relates anchor-location,
+    relates witness @card(0..),
+    relates anchor-asset @card(0..),
+    relates sensor-used @card(0..),
+    relates craft-observed @card(0..),
+    relates classification,
+    relates originating-document,
+    relates contained-in @card(0..);
+incident       plays incident-event:incident;
+time-anchor    plays incident-event:anchor-time;
+location       plays incident-event:anchor-location;
+participant    plays incident-event:witness;       # person, USPER, etc.
+asset          plays incident-event:anchor-asset;
+sensor         plays incident-event:sensor-used;
+craft          plays incident-event:craft-observed;
+classification plays incident-event:classification;
+document       plays incident-event:originating-document;
+
+# DOW Mission Report envelope — meta-incident wrapper that contains sub-events
+relation mission
+    relates mission-document,
+    relates operation,
+    relates ops-center,
+    relates majcom-unit,
+    relates cocom-unit,
+    relates originating-unit,
+    relates classification,
+    relates report-classification,
+    relates contains-incident @card(0..),
+    relates contains-reaction @card(0..),
+    relates contains-observation @card(0..),
+    relates contains-isr @card(0..);
+document       plays mission:mission-document;
+operation      plays mission:operation;
+unit           plays mission:ops-center;
+unit           plays mission:majcom-unit;
+unit           plays mission:cocom-unit;
+unit           plays mission:originating-unit;
+classification plays mission:classification;
+incident       plays mission:contains-incident;
+mission        owns domain,
+               owns mission-type,
+               owns ato,
+               owns report-type;
+
+# Equipment loadout (ACEQUIP)
+relation equipment-loadout
+    relates of-mission,
+    relates aircraft-callsign,
+    relates radar-sensor,
+    relates ecm-sensor,
+    relates target-pod,
+    relates avionics-sensor;
+mission plays equipment-loadout:of-mission;
+asset   plays equipment-loadout:aircraft-callsign;
+sensor  plays equipment-loadout:radar-sensor;
+sensor  plays equipment-loadout:ecm-sensor;
+sensor  plays equipment-loadout:target-pod;
+sensor  plays equipment-loadout:avionics-sensor;
+
+# Personnel chain
+relation personnel-chain
+    relates of-mission,
+    relates poc,
+    relates qc,
+    relates approver,
+    relates ingest-personnel;
+mission plays personnel-chain:of-mission;
+person  plays personnel-chain:poc;
+person  plays personnel-chain:qc;
+person  plays personnel-chain:approver;
+person  plays personnel-chain:ingest-personnel;
+
+# Mission timeline
+relation timeline
+    relates of-mission,
+    relates takeoff-event,
+    relates landing-event,
+    relates on-station-event,
+    relates off-station-event;
+mission plays timeline:of-mission;
+
+relation mission-event
+    relates location-of,
+    relates time-of,
+    relates asset-of;
+location    plays mission-event:location-of;
+time-anchor plays mission-event:time-of;
+asset       plays mission-event:asset-of;
+mission-event owns activity-description;
+mission-event plays timeline:takeoff-event;
+mission-event plays timeline:landing-event;
+mission-event plays timeline:on-station-event;
+mission-event plays timeline:off-station-event;
+
+# Reaction event (friendly vs enemy aircraft encounter)
+relation reaction-event
+    relates of-mission,
+    relates friendly-asset,
+    relates enemy-craft,
+    relates time-of,
+    relates location-of;
+mission     plays reaction-event:of-mission;
+asset       plays reaction-event:friendly-asset;
+craft       plays reaction-event:enemy-craft;
+time-anchor plays reaction-event:time-of;
+location    plays reaction-event:location-of;
+
+# Observation (sighting of conventional craft, distinct from UAP)
+relation observation-event
+    relates of-mission,
+    relates observer-asset,
+    relates observed-craft,
+    relates time-of,
+    relates location-of,
+    relates method;
+mission     plays observation-event:of-mission;
+asset       plays observation-event:observer-asset;
+craft       plays observation-event:observed-craft;
+time-anchor plays observation-event:time-of;
+location    plays observation-event:location-of;
+sensor      plays observation-event:method;
+
+# ISR collection event with multi-arity targets
+relation isr-collection
+    relates of-mission,
+    relates collector-asset,
+    relates time-on,
+    relates time-off,
+    relates supported-unit,
+    relates supported-operation,
+    relates target @card(0..);
+mission     plays isr-collection:of-mission;
+asset       plays isr-collection:collector-asset;
+time-anchor plays isr-collection:time-on;
+time-anchor plays isr-collection:time-off;
+unit        plays isr-collection:supported-unit;
+operation   plays isr-collection:supported-operation;
+location    plays isr-collection:target;
+
+# Vessel observation (sub-event under ISR)
+relation vessel-observation
+    relates within-isr,
+    relates vessel-observed,
+    relates time-of,
+    relates location-of;
+isr-collection plays vessel-observation:within-isr;
+vessel         plays vessel-observation:vessel-observed;
+time-anchor    plays vessel-observation:time-of;
+location       plays vessel-observation:location-of;
+
+# Cross-incident reference (entry 04 finding: "Transparent Kite ~30 min after Dark Kite")
+relation incident-sequence
+    relates source-incident,
+    relates target-incident;
+incident plays incident-sequence:source-incident;
+incident plays incident-sequence:target-incident;
+incident-sequence owns sequence-kind;
+
+# Contradiction (derived analytical view)
+relation contradicts
+    relates claim-a,
+    relates claim-b;
+claim plays contradicts:claim-a;
+claim plays contradicts:claim-b;
+contradicts owns axis;
+
+# Manifest-vs-body disagreement (D28-style)
+relation manifest-disagreement
+    relates document-of,
+    relates manifest-claim,
+    relates body-claim;
+document plays manifest-disagreement:document-of;
+claim    plays manifest-disagreement:manifest-claim;
+claim    plays manifest-disagreement:body-claim;
+manifest-disagreement owns disagreement-field;
+
+# FOIA exemption applied to a claim
+relation redacted-by
+    relates claim,
+    relates exemption;
+claim          plays redacted-by:claim;
+foia-exemption plays redacted-by:exemption;
