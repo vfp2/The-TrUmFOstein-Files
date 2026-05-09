@@ -2,6 +2,7 @@
 
 export type NodeKind =
   | "document"
+  | "agency"
   | "incident"
   | "person"
   | "unit"

@@ -10,6 +10,7 @@ interface Props {
 }
 
 const ORDER: NodeKind[] = [
+  "agency",
   "document",
   "incident",
   "person",

@@ -13,6 +13,9 @@ export const NODE_STYLE: Record<NodeKind, NodeStyle> = {
   // Documents — cool cyan, the "files" of the corpus
   "document":                   { color: "#54d3ff", size: 5, glow: 0.4, legend: "Document" },
 
+  // Agencies — bright gold, the "publishers" — anchor every document
+  "agency":                     { color: "#ffd84d", size: 9, glow: 0.9, legend: "Agency" },
+
   // Incidents — orange, the anomalous events
   "incident":                   { color: "#ff9550", size: 6, glow: 0.7, legend: "Incident" },
 
@@ -43,6 +46,7 @@ export const EDGE_COLOR: Record<string, string> = {
   "incident-event":        "#ffb347",
   "incident-sequence":     "#5ee3a4",
   "manifest-disagreement": "#ff4d6d",
+  "issued-by":             "#ffd84d",
 };
 
 export function styleFor(kind: NodeKind): NodeStyle {

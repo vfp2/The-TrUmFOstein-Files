@@ -79,6 +79,7 @@ def main() -> None:
         "document":       ["name", "shape", "filename", "url", "description",
                            "total-pages", "file-size", "acquisition-status",
                            "first-seen-at", "last-seen-at", "removed-from-source"],
+        "agency":         ["name"],
         "incident":       ["name", "description"],
         "person":         ["name", "anonymised-token"],
         "unit":           ["name"],
@@ -90,6 +91,7 @@ def main() -> None:
     }
     LABEL_KEY = {
         "document": "name",
+        "agency":   "name",
         "incident": "name",
         "person":   "anonymised-token",
         "unit":     "name",
@@ -206,6 +208,18 @@ def main() -> None:
                 si = r.get("si").get_string()
                 ti = r.get("ti").get_string()
                 add_edge(si, ti, "incident-sequence", k)
+
+            # issued-by — direct binary edge document → agency
+            # (no hub needed; this is genuinely binary)
+            rows = tx.query(
+                'match $r isa issued-by, links (document: $d, agency: $a); '
+                '$d has identifier $di; $a has identifier $ai; '
+                'select $di, $ai;'
+            ).resolve()
+            for r in rows.as_concept_rows():
+                di = r.get("di").get_string()
+                ai = r.get("ai").get_string()
+                add_edge(di, ai, "issued-by", "issued-by")
 
             # manifest-disagreement
             rows = tx.query(

@@ -9,13 +9,13 @@ import StatsBadge from "@/components/StatsBadge";
 import type { GraphData, NodeKind } from "@/lib/types";
 
 const ALL_KINDS: NodeKind[] = [
-  "document", "incident", "person", "unit", "operation", "location",
+  "document", "agency", "incident", "person", "unit", "operation", "location",
   "time-anchor", "classification", "foia-exemption", "claim",
   "rel:mission", "rel:incident-event", "rel:manifest-disagreement",
 ];
 
 const DEFAULT_VISIBLE: NodeKind[] = [
-  "document", "incident", "person", "unit", "operation", "location",
+  "document", "agency", "incident", "person", "unit", "operation", "location",
   "classification", "claim",
   "rel:mission", "rel:incident-event", "rel:manifest-disagreement",
   // time-anchor hidden by default — there are 116 of them and they
