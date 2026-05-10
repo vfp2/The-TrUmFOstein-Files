@@ -35,10 +35,18 @@ export default function Graph3D({
   const [hoverNodeId, setHoverNodeId] = useState<string | null>(null);
 
   // Filter to currently visible kinds.
+  // react-force-graph mutates edge.source / edge.target into node-object
+  // references on first render, so we read the id through both shapes and
+  // hand back fresh edge objects with string ids — otherwise re-toggling
+  // a filter strands every edge (object refs miss the id-string Set).
   const filtered = useMemo(() => {
     const nodes = data.nodes.filter((n) => visibleKinds.has(n.kind));
     const ids = new Set(nodes.map((n) => n.id));
-    const links = data.edges.filter((e) => ids.has(e.source) && ids.has(e.target));
+    const idOf = (ref: string | { id: string }) =>
+      typeof ref === "string" ? ref : ref.id;
+    const links = data.edges
+      .filter((e) => ids.has(idOf(e.source)) && ids.has(idOf(e.target)))
+      .map((e) => ({ ...e, source: idOf(e.source), target: idOf(e.target) }));
     return { nodes: nodes as ForceNode[], links };
   }, [data, visibleKinds]);
 
